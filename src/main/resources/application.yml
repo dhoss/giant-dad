@@ -1,8 +1,40 @@
-#Sat Apr 25 14:46:23 MDT 2026
 micronaut:
   application:
     name: giantdad
-    views:
-      jte:
-        dynamic: true
-
+  views:
+    jte:
+      dynamic: true
+      dynamic-path: ${jteDir}/jte-classes
+  router:
+    static-resources:
+      js:
+        mapping: /js/*.js
+        paths: "classpath:static/js"
+  server:
+    cors:
+      localhost-pass-through: true
+      enabled: true
+      single-header: true
+      configurations:
+        web:
+          allowed-origins:
+            - http://localhost:8080
+            - http://settra:8080
+          allowed-methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+          allowed-headers:
+            - Content-Type
+            - Accept
+            - Authorization
+            - X-Requested-With
+datasources:
+  # TODO: use hikari
+  default:
+    url: jdbc:postgresql://localhost:5432/giantdad
+    driver-class-name: org.postgresql.Driver
+    username: giantdad
+    password: giantdad

@@ -2,20 +2,21 @@ package in.stonecolddev;
 
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-
-import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 @MicronautTest
-class GiantdadTest {
+public class GiantdadTest {
 
-    @Inject
-    EmbeddedApplication<?> application;
+  private final EmbeddedApplication<?> application;
 
-    @Test
-    void testItWorks() {
-        Assertions.assertTrue(application.isRunning());
-    }
+  public GiantdadTest(EmbeddedApplication<?> application) {
+    this.application = application;
+  }
+
+  @Test
+  public void smokeTest() {
+    Assertions.assertTrue(application.isRunning());
+  }
 
 }
