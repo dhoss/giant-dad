@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
     <head>
         <title>Giant Dad Workout Tracker</title>
     </head>
