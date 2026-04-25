@@ -2,7 +2,6 @@
 micronaut:
   application:
     name: giantdad
-    views:
-      jte:
-        dynamic: true
-
+  views:
+    jte:
+      dynamic: true
