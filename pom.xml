@@ -21,6 +21,7 @@
     <micronaut.aot.enabled>false</micronaut.aot.enabled>
     <micronaut.aot.packageName>in.stonecolddev.aot.generated</micronaut.aot.packageName>
     <exec.mainClass>in.stonecolddev.Application</exec.mainClass>
+    <record.builder.version>52</record.builder.version>
   </properties>
 
   <repositories>
@@ -31,6 +32,21 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>io.micronaut.sql</groupId>
+      <artifactId>micronaut-jdbc-hikari</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+      <dependency>
+          <groupId>io.micronaut.sql</groupId>
+          <artifactId>micronaut-jdbi</artifactId>
+      </dependency>
+    <dependency>
+      <groupId>io.soabase.record-builder</groupId>
+      <artifactId>record-builder-core</artifactId>
+      <version>${record.builder.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
@@ -97,6 +113,11 @@
           <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
 
           <annotationProcessorPaths combine.children="append">
+            <path>
+              <groupId>io.soabase.record-builder</groupId>
+              <artifactId>record-builder-processor</artifactId>
+              <version>${record.builder.version}</version>
+            </path>
             <path>
               <groupId>io.micronaut</groupId>
               <artifactId>micronaut-http-validation</artifactId>
