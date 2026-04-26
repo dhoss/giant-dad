@@ -1,0 +1,19 @@
+[Unit]
+Description=Giant Dad web application
+After=network.target
+
+[Service]
+# The user that will run the service (recommended: non-root user)
+User=ubuntu
+# The folder where your application is located
+WorkingDirectory=/home/devin/giant-dad
+# The exact command to start your application
+ExecStart=/home/devin/.sdkman/candidates/java/current/bin/java -j jar /home/devin/giant-dad/giant-dad.jar
+# Automatically restart if the application crashes
+Restart=always
+# Optional: Environment variables
+#Environment=NODE_ENV=production
+
+[Install]
+# This tells systemd to start the service when the system reaches multi-user mode (standard boot)
+WantedBy=multi-user.target
