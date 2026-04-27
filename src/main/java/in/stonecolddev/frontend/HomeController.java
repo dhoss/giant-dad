@@ -4,17 +4,18 @@ import in.stonecolddev.user.UserRecord;
 import in.stonecolddev.user.UserRecordBuilder;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.views.ModelAndView;
-
-import java.util.Map;
+import io.micronaut.views.View;
 
 @Controller
 public class HomeController {
 
 
+  @View("home/homepage")
   @Get("/")
-  public ModelAndView<UserRecord> homePage() {
-    return new ModelAndView<>("home/homepage", UserRecordBuilder.builder().userName("devin").build());
+  public UserRecord homePage() {
+    return UserRecordBuilder.builder()
+            .userName("devin")
+            .build();
   }
 
 }

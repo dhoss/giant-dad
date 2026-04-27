@@ -4,3 +4,4 @@ micronaut:
   views:
     jte:
       dynamic: true
+      dynamic-path: ${jteDir}/jte-classes
