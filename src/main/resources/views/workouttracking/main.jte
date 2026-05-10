@@ -27,6 +27,11 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.querySelector("#view-workout-modal");
+            const closeBtn = document.querySelector("#view-workout-modal-close");
+
+            closeBtn.addEventListener("click", () => modal.close());
+
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -39,23 +44,53 @@
                 },
                 weekNumbers: true,
                 dayMaxEvents: true, // allow "more" link when too many events
-                events: '/api/programs'
+                events: '/api/programs',
+                dateClick: function(info) {
+                    document.getElementById('view-workout-modal-day').innerHTML = info.dateStr;
+                    modal.showModal();
+                }
             });
 
             calendar.render();
+
         });
 
     </script>
 </head>
 <body>
-<!--
 <main>
     <div class="d-flex justify-content-center">
-    -->
-        <div id="calendar"></div>
-<!--
+    <div id="calendar"></div>
+    <dialog id="view-workout-modal">
+        <h2>Workout</h2>
+        <div id="view-workout-modal-day"></div>
+        <div class="row">
+            <div class="col-12">
+                <label for="lift-data-list" class="form-label">Select lift</label>
+                <input class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
+                <datalist id="lift-data-list-options">
+                    <option value="San Francisco"></option>
+                    <option value="New York"></option>
+                    <option value="Seattle"></option>
+                    <option value="Los Angeles"></option>
+                    <option value="Chicago"></option>
+                </datalist>
+            </div>
+            <div class="col">
+                <label for="set-weight" class="form-label">Set Weight</label>
+                <input id="set-weight" name="set-weight" type="text" class="form-control" placeholder="" aria-label="Set Weight">
+            </div>
+            <div class="col">
+                <label for="set-reps" class="form-label">Set Reps</label>
+                <input id="set-reps" name="set-reps" type="text" class="form-control" placeholder="" aria-label="Set Reps">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+        <button id="view-workout-modal-close">Close</button>
+    </dialog>
     </div>
 </main>
--->
 </body>
 </html>
