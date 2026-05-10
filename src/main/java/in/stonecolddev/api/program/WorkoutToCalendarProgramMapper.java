@@ -6,5 +6,5 @@ import io.micronaut.context.annotation.Mapper;
 public interface WorkoutToCalendarProgramMapper {
 
   @Mapper.Mapping(to="start", from="forDay")
-  CalendarProgram toCalendarProgram(Workout workout);
+  CalendarProgramResponse toCalendarProgramResponse(Workout workout);
 }

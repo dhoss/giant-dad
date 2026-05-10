@@ -25,12 +25,52 @@
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.20/index.global.min.js'></script>
     <script>
-
+        // TODO: move to javascript file
+@raw
         document.addEventListener('DOMContentLoaded', function () {
             const modal = document.querySelector("#view-workout-modal");
             const closeBtn = document.querySelector("#view-workout-modal-close");
+            const workoutForm = document.querySelector("#workout-data");
 
             closeBtn.addEventListener("click", () => modal.close());
+
+            workoutForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+// TODO: code for parsing nested fields
+               // const entries = [];
+
+               // // Example: Mapping duplicate 'name[]' and 'phone[]'
+               // const names = formData.getAll('name[]');
+               // const phones = formData.getAll('phone[]');
+
+               // for (let i = 0; i < names.length; i++) {
+               //     entries.push({
+               //         name: names[i],
+               //         phone: phones[i]
+               //     });
+               // }
+                const workoutFormData = new FormData(workoutForm);
+                const workoutFormForJson = Object.fromEntries(workoutFormData.entries());
+                try {
+                    const response = await fetch('http://localhost:8080/api/programs/save', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(workoutFormForJson)
+
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json(); // Parse the server's response
+                    console.log('Success:', result);
+                } catch (error) {
+                    console.error("Error saving workout:", error);
+                }
+            });
 
             var calendarEl = document.getElementById('calendar');
 
@@ -54,7 +94,7 @@
             calendar.render();
 
         });
-
+@endraw
     </script>
 </head>
 <body>
@@ -64,30 +104,42 @@
     <dialog id="view-workout-modal">
         <h2>Workout</h2>
         <div id="view-workout-modal-day"></div>
-        <div class="row">
-            <div class="col-12">
-                <label for="lift-data-list" class="form-label">Select lift</label>
-                <input class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
-                <datalist id="lift-data-list-options">
-                    <option value="San Francisco"></option>
-                    <option value="New York"></option>
-                    <option value="Seattle"></option>
-                    <option value="Los Angeles"></option>
-                    <option value="Chicago"></option>
-                </datalist>
+        <form id="workout-data" class="row g-3">
+            <div class="row">
+                <div class="col-12">
+                    <label for="lift-data-list" class="form-label">Select lift</label>
+                    <input name="lifts[0][name]" class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
+                    <datalist id="lift-data-list-options">
+                        <option value="squat">Squat</option>
+                        <option value="deadlift">Deadlift</option>
+                        <option value="bench">Bench</option>
+                    </datalist>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="set-weight" class="form-label">Set Weight</label>
+                        <input id="set-weight" name="lifts[0][sets[0][weight]]" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                    </div>
+                    <div class="col">
+                        <label for="set-reps" class="form-label">Set Reps</label>
+                        <input id="set-reps" name="lifts[0][sets[0][reps]]" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="set-weight" class="form-label">Set Weight</label>
+                        <input id="set-weight" name="lifts[0][sets[1][weight]]" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                    </div>
+                    <div class="col">
+                        <label for="set-reps" class="form-label">Set Reps</label>
+                        <input id="set-reps" name="lifts[0][sets[1][reps]]" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="submit" id="save-workout" class="btn btn-primary">Save</button>
+                </div>
             </div>
-            <div class="col">
-                <label for="set-weight" class="form-label">Set Weight</label>
-                <input id="set-weight" name="set-weight" type="text" class="form-control" placeholder="" aria-label="Set Weight">
-            </div>
-            <div class="col">
-                <label for="set-reps" class="form-label">Set Reps</label>
-                <input id="set-reps" name="set-reps" type="text" class="form-control" placeholder="" aria-label="Set Reps">
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </div>
+        </form>
         <button id="view-workout-modal-close">Close</button>
     </dialog>
     </div>
