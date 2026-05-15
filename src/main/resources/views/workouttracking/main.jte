@@ -24,6 +24,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.20/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.18.1/lodash.min.js"></script>
     <script>
         // TODO: move to javascript file
 @raw
@@ -48,10 +49,23 @@
                     const setInfo = key.split(/(\d+)\./);
                     console.log("***** SETINFO " + setInfo);
                     if (setInfo[0] != null && setInfo[1] != null && setInfo[2] != null) {
-                        const setObject = {
+                        let newSetObject = {
                             [setInfo[1]]: {[setInfo[2]]: value}
                         };
-                        setData.getOrInsert("set", []).push(setObject);
+                        console.log("**** NEW SET OBJECT " + JSON.stringify(newSetObject));
+                        if (setData.has("set")) {
+                            const currentSetData = setData.get("set");
+                            console.log("**** CURRENT SET DATA " + JSON.stringify(currentSetData));
+                            for (const s of currentSetData) {
+                                console.log("**** CURRENT SET DATA ELEMENT " + JSON.stringify(s));
+                                newSetObject = _.merge(s, newSetObject);//Object.assign({}, newSetObject, s);
+
+                                console.log("**** UPDATED NEW SET OBJECT " + JSON.stringify(newSetObject));
+                            }
+                            setData.set("set", [newSetObject]);
+                        } else {
+                            setData.getOrInsert("set", []).push(newSetObject);
+                        }
                     }
                     console.log("**** SET PARTS " + setInfo[0] + " -> " + setInfo[1] + " -> " + setInfo[2] + " -> " +value);
                     console.log("**** CURRENT SET DATA " +JSON.stringify(Object.fromEntries(setData.entries())));
