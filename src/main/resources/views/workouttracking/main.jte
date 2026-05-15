@@ -37,27 +37,41 @@
             workoutForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
 // TODO: code for parsing nested fields
-               // const entries = [];
+                const setData = new Map();
 
-               // // Example: Mapping duplicate 'name[]' and 'phone[]'
-               // const names = formData.getAll('name[]');
-               // const phones = formData.getAll('phone[]');
-
-               // for (let i = 0; i < names.length; i++) {
-               //     entries.push({
-               //         name: names[i],
-               //         phone: phones[i]
-               //     });
-               // }
                 const workoutFormData = new FormData(workoutForm);
-                const workoutFormForJson = Object.fromEntries(workoutFormData.entries());
+                const workoutFormJson = Object.fromEntries(workoutFormData.entries());
+                const lift =  workoutFormData.get('lift');
+
+                for (const [key, value] of workoutFormData) {
+                    console.log("***** WORKOUTFORMJSON " + key + " -> " + value);
+                    const setInfo = key.split(/(\d+)\./);
+                    console.log("***** SETINFO " + setInfo);
+                    if (setInfo[0] != null && setInfo[1] != null && setInfo[2] != null) {
+                        const setObject = {
+                            [setInfo[1]]: {[setInfo[2]]: value}
+                        };
+                        setData.getOrInsert("set", []).push(setObject);
+                    }
+                    console.log("**** SET PARTS " + setInfo[0] + " -> " + setInfo[1] + " -> " + setInfo[2] + " -> " +value);
+                    console.log("**** CURRENT SET DATA " +JSON.stringify(Object.fromEntries(setData.entries())));
+
+
+                }
                 try {
                     const response = await fetch('http://localhost:8080/api/programs/save', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(workoutFormForJson)
+                        body: JSON.stringify({
+                          lifts: [
+                              {
+                                  name: lift//,
+//                                  sets: workoutFormJson
+                              }
+                          ]
+                        })//workoutFormForJson)
 
                     });
 
@@ -108,7 +122,7 @@
             <div class="row">
                 <div class="col-12">
                     <label for="lift-data-list" class="form-label">Select lift</label>
-                    <input name="lifts[0][name]" class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
+                    <input name="lift" class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
                     <datalist id="lift-data-list-options">
                         <option value="squat">Squat</option>
                         <option value="deadlift">Deadlift</option>
@@ -118,21 +132,21 @@
                 <div class="row">
                     <div class="col">
                         <label for="set-weight" class="form-label">Set Weight</label>
-                        <input id="set-weight" name="lifts[0][sets[0][weight]]" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                        <input id="set-weight" name="set0.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
                     </div>
                     <div class="col">
                         <label for="set-reps" class="form-label">Set Reps</label>
-                        <input id="set-reps" name="lifts[0][sets[0][reps]]" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                        <input id="set-reps" name="set0.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <label for="set-weight" class="form-label">Set Weight</label>
-                        <input id="set-weight" name="lifts[0][sets[1][weight]]" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                        <input id="set-weight" name="set1.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
                     </div>
                     <div class="col">
                         <label for="set-reps" class="form-label">Set Reps</label>
-                        <input id="set-reps" name="lifts[0][sets[1][reps]]" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                        <input id="set-reps" name="set1.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
                     </div>
                 </div>
                 <div class="col-12">
