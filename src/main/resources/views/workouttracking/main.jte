@@ -38,40 +38,33 @@
             workoutForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
 // TODO: code for parsing nested fields
+                const setDataPlaceholderMap = new Map();
                 const setData = new Map();
 
                 const workoutFormData = new FormData(workoutForm);
-                const workoutFormJson = Object.fromEntries(workoutFormData.entries());
                 const lift =  workoutFormData.get('lift');
 
                 for (const [key, value] of workoutFormData) {
-                    console.log("***** WORKOUTFORMJSON " + key + " -> " + value);
                     const setInfo = key.split(/(\d+)\./);
-                    console.log("***** SETINFO " + setInfo);
-                    if (setInfo[0] != null && setInfo[1] != null && setInfo[2] != null) {
+                    let setNum = Number(setInfo[1]);
+                    let weightOrRepsKey = setInfo[2];
+                    if (setInfo[0] != null && setNum != null && weightOrRepsKey != null) {
                         let newSetObject = {
-                            [setInfo[1]]: {[setInfo[2]]: value}
+                            [setNum]: {[weightOrRepsKey]: Number(value)}
                         };
-                        console.log("**** NEW SET OBJECT " + JSON.stringify(newSetObject));
-                        if (setData.has("set")) {
-                            const currentSetData = setData.get("set");
-                            console.log("**** CURRENT SET DATA " + JSON.stringify(currentSetData));
-                            for (const s of currentSetData) {
-                                console.log("**** CURRENT SET DATA ELEMENT " + JSON.stringify(s));
-                                newSetObject = _.merge(s, newSetObject);//Object.assign({}, newSetObject, s);
-
-                                console.log("**** UPDATED NEW SET OBJECT " + JSON.stringify(newSetObject));
-                            }
-                            setData.set("set", [newSetObject]);
-                        } else {
-                            setData.getOrInsert("set", []).push(newSetObject);
+                        const currentSetData = setDataPlaceholderMap.getOrInsert("set", []);
+                        for (const s of currentSetData) {
+                            newSetObject = _.merge(s, newSetObject);
                         }
+                        setDataPlaceholderMap.set("set", [newSetObject]);
                     }
-                    console.log("**** SET PARTS " + setInfo[0] + " -> " + setInfo[1] + " -> " + setInfo[2] + " -> " +value);
-                    console.log("**** CURRENT SET DATA " +JSON.stringify(Object.fromEntries(setData.entries())));
+                    console.log("**** SET PARTS " + setInfo[0] + " -> " + setNum + " -> " + weightOrRepsKey + " -> " +value);
+                    let setDataJson = Object.fromEntries(setDataPlaceholderMap.entries());
+                    console.log("**** CURRENT SET DATA " +JSON.stringify(setDataJson));
 
 
                 }
+                console.log("**** DATA " +JSON.stringify((setDataPlaceholderMap.get("set"))[0]));
                 try {
                     const response = await fetch('http://localhost:8080/api/programs/save', {
                         method: 'PUT',
@@ -81,12 +74,11 @@
                         body: JSON.stringify({
                           lifts: [
                               {
-                                  name: lift//,
-//                                  sets: workoutFormJson
+                                  name: lift,
+                                  sets: (setDataPlaceholderMap.get("set"))[0]
                               }
                           ]
-                        })//workoutFormForJson)
-
+                        })
                     });
 
                     if (!response.ok) {

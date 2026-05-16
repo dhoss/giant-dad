@@ -13,8 +13,8 @@ import java.util.List;
 @RecordBuilder
 @Serdeable
 public record SaveWorkoutRequest(
-    LocalDate forDate,
-    List<Lift> lifts,
-    OffsetDateTime createdOn,
-    OffsetDateTime updatedOn
+//    LocalDate forDate,
+    List<Lift> lifts//,
+ //   OffsetDateTime createdOn,
+ //   OffsetDateTime updatedOn
 ) {}
