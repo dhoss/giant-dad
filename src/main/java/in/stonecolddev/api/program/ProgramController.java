@@ -57,7 +57,6 @@ public class ProgramController {
   @Produces(MediaType.APPLICATION_JSON)
   @Put("save")
   public HttpResponse<SaveWorkoutResponse> saveWorkout(@Body SaveWorkoutRequest saveWorkoutRequest) {
-    log.info("**** SAVEWORKOUT REQUEST {}", saveWorkoutRequest);
     return HttpResponse.ok(
         saveWorkoutReqToResMapper.toSaveWorkoutResponse(saveWorkoutRequest)
             .withSaveResult(HttpStatus.CREATED)

@@ -5,7 +5,3 @@ micronaut:
     jte:
       dynamic: true
       dynamic-path: ${jteDir}/jte-classes
-  serde:
-    jackson:
-      features:
-        INCLUDE_SOURCE_IN_LOCATION: true

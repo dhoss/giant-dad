@@ -4,7 +4,6 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.Serdeable;
 import io.soabase.recordbuilder.core.RecordBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 @Introspected
@@ -12,9 +11,6 @@ import java.util.Map;
 @Serdeable
 public record Lift(
     String name,
-    Map<Integer, Set> sets//,
-//    String weightMeasurement // TODO: make an enum
-) {
-
-
-}
+    Map<Integer, Set> sets,
+    String weightMeasurement // TODO: make an enum
+) {}
