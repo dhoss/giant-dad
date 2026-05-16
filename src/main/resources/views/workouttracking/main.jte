@@ -37,9 +37,7 @@
 
             workoutForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
-// TODO: code for parsing nested fields
                 const setDataPlaceholderMap = new Map();
-                const setData = new Map();
 
                 const workoutFormData = new FormData(workoutForm);
                 const lift =  workoutFormData.get('lift');
@@ -58,13 +56,8 @@
                         }
                         setDataPlaceholderMap.set("set", [newSetObject]);
                     }
-                    console.log("**** SET PARTS " + setInfo[0] + " -> " + setNum + " -> " + weightOrRepsKey + " -> " +value);
-                    let setDataJson = Object.fromEntries(setDataPlaceholderMap.entries());
-                    console.log("**** CURRENT SET DATA " +JSON.stringify(setDataJson));
-
-
                 }
-                console.log("**** DATA " +JSON.stringify((setDataPlaceholderMap.get("set"))[0]));
+
                 try {
                     const response = await fetch('http://localhost:8080/api/programs/save', {
                         method: 'PUT',
@@ -85,16 +78,14 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
 
-                    const result = await response.json(); // Parse the server's response
+                    const result = await response.json();
                     console.log('Success:', result);
                 } catch (error) {
                     console.error("Error saving workout:", error);
                 }
             });
 
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            new FullCalendar.Calendar(document.getElementById('calendar'), {
                 timeZone: 'UTC',
                 themeSystem: 'bootstrap5',
                 headerToolbar: {
@@ -105,13 +96,11 @@
                 weekNumbers: true,
                 dayMaxEvents: true, // allow "more" link when too many events
                 events: '/api/programs',
-                dateClick: function(info) {
+                dateClick: function (info) {
                     document.getElementById('view-workout-modal-day').innerHTML = info.dateStr;
                     modal.showModal();
                 }
-            });
-
-            calendar.render();
+            }).render();
 
         });
 @endraw
