@@ -5,3 +5,8 @@ micronaut:
     jte:
       dynamic: true
       dynamic-path: ${jteDir}/jte-classes
+  router:
+    static-resources:
+      js:
+        mapping: /js/*.js
+        paths: "classpath:static/js"
