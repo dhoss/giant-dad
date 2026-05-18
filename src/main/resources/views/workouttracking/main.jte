@@ -59,7 +59,8 @@
                 }
 
                 try {
-                    const response = await fetch('http://localhost:8080/api/programs/save', {
+                    // TODO: put this URL in config
+                    const response = await fetch('http://localhost:8080/api/workouts/save', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'

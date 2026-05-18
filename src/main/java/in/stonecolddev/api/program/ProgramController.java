@@ -53,14 +53,4 @@ public class ProgramController {
         ).stream().map(w -> workoutToCalendarProgramMapper.toCalendarProgramResponse(w)).toList());
   }
 
-  // TODO: move this to workout api controller
-  @Produces(MediaType.APPLICATION_JSON)
-  @Put("save")
-  public HttpResponse<SaveWorkoutResponse> saveWorkout(@Body SaveWorkoutRequest saveWorkoutRequest) {
-    return HttpResponse.ok(
-        saveWorkoutReqToResMapper.toSaveWorkoutResponse(saveWorkoutRequest)
-            .withSaveResult(HttpStatus.CREATED)
-            .withUpdatedOn(OffsetDateTime.now()));
-  }
-
 }
