@@ -84,10 +84,7 @@ async function retrieveWorkout(date) {
         if (!res.ok) throw new Error(`Error retrieving workout data for ${date}: ${res.status} -> ${await res.text()}`);
         const workoutData = await res.json();
 
-        console.log(`*****WORKOUTDATA ${JSON.stringify(workoutData.workout)}`);
         for (const [index, lift] of workoutData.workout.lifts.entries()) {
-            console.log(`**** LIFT `, JSON.stringify(lift));
-            console.log(`**** LIFT NAME`, lift.name);
             document.getElementById(`lift${index}`).value = lift.name;
 
             for (const [setIndex, set] of Object.entries(lift.sets)) {
