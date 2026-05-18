@@ -30,48 +30,43 @@
 <body>
 <main>
     <div class="d-flex justify-content-center">
-    <div id="calendar"></div>
-    <dialog id="view-workout-modal">
-        <h2>Workout</h2>
-        <div id="view-workout-modal-day"></div>
-        <form id="workout-data" class="row g-3">
-            <div class="row">
-                <div class="col-12">
-                    <label for="lift-data-list" class="form-label">Select lift</label>
-                    <input name="lift" class="form-control" list="lift-data-list-options" id="lift-data-list" placeholder="Type to search">
-                    <datalist id="lift-data-list-options">
-                        <option value="squat">Squat</option>
-                        <option value="deadlift">Deadlift</option>
-                        <option value="bench">Bench</option>
-                    </datalist>
-                </div>
+        <div id="calendar"></div>
+        <dialog id="view-workout-modal">
+            <h2>Workout</h2>
+            <div id="view-workout-modal-day"></div>
+            <form id="workout-data" class="row g-3">
                 <div class="row">
-                    <div class="col">
-                        <label for="set-weight" class="form-label">Set Weight</label>
-                        <input id="set-weight" name="set0.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                    <div class="col-12">
+                        <label for="lift0" class="form-label">Lift</label>
+                        <input name="lift" class="form-control" id="lift0">
                     </div>
-                    <div class="col">
-                        <label for="set-reps" class="form-label">Set Reps</label>
-                        <input id="set-reps" name="set0.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                    <div class="row">
+                        <div class="col">
+                            <label for="set0weight" class="form-label">Set Weight</label>
+                            <input id="set0weight" name="set0.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                        </div>
+                        <div class="col">
+                            <label for="set0reps" class="form-label">Set Reps</label>
+                            <input id="set0reps" name="set0.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="set1weight" class="form-label">Set Weight</label>
+                            <input id="set1weight" name="set1.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
+                        </div>
+                        <div class="col">
+                            <label for="set1reps" class="form-label">Set Reps</label>
+                            <input id="set1reps" name="set1.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" id="save-workout" class="btn btn-primary">Save</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <label for="set-weight" class="form-label">Set Weight</label>
-                        <input id="set-weight" name="set1.weight" type="text" class="form-control" placeholder="0" aria-label="Set Weight">
-                    </div>
-                    <div class="col">
-                        <label for="set-reps" class="form-label">Set Reps</label>
-                        <input id="set-reps" name="set1.reps" type="text" class="form-control" placeholder="0" aria-label="Set Reps">
-                    </div>
-                </div>
-                <div class="col-12">
-                    <button type="submit" id="save-workout" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </form>
-        <button id="view-workout-modal-close">Close</button>
-    </dialog>
+            </form>
+            <button id="view-workout-modal-close">Close</button>
+        </dialog>
     </div>
 </main>
 </body>

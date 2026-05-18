@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     closeBtn.addEventListener("click", () => modal.close());
 
+
     workoutForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const setDataPlaceholderMap = new Map();
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
+            // TODO: update response div with success message
             const result = await response.json();
             console.log('Success:', result);
         } catch (error) {
@@ -68,9 +70,33 @@ document.addEventListener('DOMContentLoaded', function () {
         dayMaxEvents: true, // allow "more" link when too many events
         events: '/api/programs',
         dateClick: function (info) {
-            document.getElementById('view-workout-modal-day').innerHTML = info.dateStr;
+            document.getElementById('view-workout-modal-day').innerHTML = `<p>${info.dateStr}</p>`;
+            retrieveWorkout(info.dateStr)
             modal.showModal();
         }
     }).render();
 
 });
+
+async function retrieveWorkout(date) {
+    try {
+        const res = await fetch(`http://localhost:8080/api/workouts/${date}`);
+        if (!res.ok) throw new Error(`Error retrieving workout data for ${date}: ${res.status} -> ${await res.text()}`);
+        const workoutData = await res.json();
+
+        console.log(`*****WORKOUTDATA ${JSON.stringify(workoutData.workout)}`);
+        for (const [index, lift] of workoutData.workout.lifts.entries()) {
+            console.log(`**** LIFT `, JSON.stringify(lift));
+            console.log(`**** LIFT NAME`, lift.name);
+            document.getElementById(`lift${index}`).value = lift.name;
+
+            for (const [setIndex, set] of Object.entries(lift.sets)) {
+                document.getElementById(`set${setIndex}reps`).value = set.reps;
+                document.getElementById(`set${setIndex}weight`).value = set.weight;
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        // TODO: update response div with error
+    }
+}
